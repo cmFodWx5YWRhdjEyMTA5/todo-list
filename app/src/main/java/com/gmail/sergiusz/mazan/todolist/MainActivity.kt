@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.main_toolbar))
+        supportActionBar?.title = resources.getString(R.string.today)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
