@@ -3,4 +3,7 @@
     <string name="today">Today</string>
     <string name="add">Add</string>
     <string name="add_event_title">Add Event</string>
+    <string name="event_description">Description&#8230;</string>
+    <string name="event_date">Date&#8230;</string>
+    <string name="event_time">Time&#8230;</string>
 </resources>
