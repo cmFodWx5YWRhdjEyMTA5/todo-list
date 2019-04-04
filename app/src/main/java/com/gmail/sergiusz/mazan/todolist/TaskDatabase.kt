@@ -3,24 +3,24 @@ package com.gmail.sergiusz.mazan.todolist
 import android.arch.persistence.room.*
 import android.content.Context
 
-@Database(entities = [Event::class], version = 1)
+@Database(entities = [Task::class], version = 1)
 @TypeConverters(*[LocalDateConverter::class, LocalTimeConverter::class])
-abstract class EventDatabase : RoomDatabase() {
+abstract class TaskDatabase : RoomDatabase() {
 
-    abstract fun eventDao() : EventDao
+    abstract fun taskDao() : TaskDao
 
     companion object {
 
         @Volatile
-        private var INSTANCE: EventDatabase? = null
+        private var INSTANCE: TaskDatabase? = null
 
-        fun getDatabase(context : Context) : EventDatabase {
+        fun getDatabase(context : Context) : TaskDatabase {
             val tempInstance = INSTANCE
             if(tempInstance != null)
                 return tempInstance
             synchronized(this) {
-                val instance = Room.databaseBuilder(context.applicationContext, EventDatabase::class.java,
-                    "event_database").build()
+                val instance = Room.databaseBuilder(context.applicationContext, TaskDatabase::class.java,
+                    "task_database").build()
                 INSTANCE = instance
                 return instance
             }

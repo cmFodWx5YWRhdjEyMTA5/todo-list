@@ -15,67 +15,67 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class AddEventActivity : AppCompatActivity() {
+class AddTaskActivity : AppCompatActivity() {
 
     private var date : LocalDate = LocalDate.now()
     private var time : LocalTime? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_event)
-        setSupportActionBar(findViewById(R.id.add_event_toolbar))
+        setContentView(R.layout.activity_add_task)
+        setSupportActionBar(findViewById(R.id.add_task_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val addButton : Button = findViewById(R.id.addButton)
-        val dateText : EditText = findViewById(R.id.eventDate)
-        val timeText : EditText = findViewById(R.id.eventTime)
-        val descriptionText : EditText = findViewById(R.id.eventDescription)
+        val dateText : EditText = findViewById(R.id.taskDate)
+        val timeText : EditText = findViewById(R.id.taskTime)
+        val descriptionText : EditText = findViewById(R.id.taskDescription)
 
-        updateEventDate()
+        updateTaskDate()
 
         dateText.setOnClickListener {
             val onDateSetListener = { view : DatePicker, year : Int, month : Int, dayOfMonth : Int ->
                 date = LocalDate.of(year, month, dayOfMonth)
-                updateEventDate()
+                updateTaskDate()
             }
 
-            DatePickerDialog(this@AddEventActivity, onDateSetListener, date.year, date.monthValue,
+            DatePickerDialog(this@AddTaskActivity, onDateSetListener, date.year, date.monthValue,
                 date.dayOfMonth).show()
         }
 
         timeText.setOnClickListener {
             val onTimeSetListener = { view : TimePicker, hourOfDay : Int, minute : Int ->
                 time = LocalTime.of(hourOfDay, minute)
-                updateEventTime()
+                updateTaskTime()
             }
 
             val nonNullTime = time ?: LocalTime.now()
-            TimePickerDialog(this@AddEventActivity, onTimeSetListener,
+            TimePickerDialog(this@AddTaskActivity, onTimeSetListener,
                 nonNullTime.hour, nonNullTime.minute, true).show()
         }
 
         addButton.setOnClickListener {
             if(descriptionText.text == null || descriptionText.text.toString() == "")
-                Toast.makeText(this@AddEventActivity, getString(R.string.null_description),
+                Toast.makeText(this@AddTaskActivity, getString(R.string.null_description),
                     Toast.LENGTH_LONG).show()
             else {
-                val event = Event(descriptionText.text.toString(), date, time)
+                val task = Task(descriptionText.text.toString(), date, time)
                 val intent = Intent()
-                intent.putExtra("EVENT", event)
+                intent.putExtra("task", task)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }
         }
     }
 
-    private fun updateEventDate() {
-        val dateText : EditText = findViewById(R.id.eventDate)
+    private fun updateTaskDate() {
+        val dateText : EditText = findViewById(R.id.taskDate)
         val formatter = DateTimeFormatter.ofPattern("MM/dd/yy")
         dateText.setText(date.format(formatter))
     }
 
-    private fun updateEventTime() {
-        val timeText : EditText = findViewById(R.id.eventTime)
+    private fun updateTaskTime() {
+        val timeText : EditText = findViewById(R.id.taskTime)
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
         timeText.setText(time?.format(formatter))
     }

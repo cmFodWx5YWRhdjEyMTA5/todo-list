@@ -7,11 +7,11 @@ import android.arch.persistence.room.Query
 import java.time.LocalDate
 
 @Dao
-interface EventDao {
+interface TaskDao {
 
     @Insert
-    fun insert(event : Event)
+    fun insert(task : Task)
 
-    @Query("SELECT * from event where event_date = :date")
-    fun getEventsOfADay(date : LocalDate) : LiveData<List<Event>>
+    @Query("SELECT * from task where task_date = :date")
+    fun gettasksOfADay(date : LocalDate) : LiveData<List<Task>>
 }
