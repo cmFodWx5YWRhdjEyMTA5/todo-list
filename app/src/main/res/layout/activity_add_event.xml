@@ -30,7 +30,7 @@
             android:ems="10"
             android:id="@+id/eventDate"
             android:focusable="false"
-            android:hint="@string/event_date" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/eventDescription"
             app:layout_constraintEnd_toStartOf="@+id/eventTime" android:layout_marginEnd="57dp"/>
@@ -45,7 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/eventDescription" android:hint="@string/event_time"/>
     <Button
-            android:text="Add"
+            android:text="@string/add"
             android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:id="@+id/addButton" android:layout_marginTop="16dp"
