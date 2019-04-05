@@ -1,6 +1,7 @@
 package com.gmail.sergiusz.mazan.todolist
 
 import android.app.Activity
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private val GET_task_REQUEST = 1
 
     private lateinit var repository : TaskRepository
+    private lateinit var viewModel : TaskViewModel
 
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.Main + job)
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = resources.getString(R.string.today)
 
         repository = TaskRepository(TaskDatabase.getDatabase(this).taskDao())
+        viewModel = ViewModelProviders.of(this).get(TaskViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -48,12 +51,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == GET_task_REQUEST && resultCode == Activity.RESULT_OK) {
             val task : Task = data?.getSerializableExtra("task") as Task
-            scope.launch(Dispatchers.IO) {
-                repository.insert(task)
-                this@MainActivity.runOnUiThread {
-                    Toast.makeText(this@MainActivity, getString(R.string.task_added), Toast.LENGTH_LONG).show()
-                }
-            }
+            viewModel.insert(task)
         }
     }
 

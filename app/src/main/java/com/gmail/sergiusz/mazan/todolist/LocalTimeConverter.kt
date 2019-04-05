@@ -14,8 +14,9 @@ class LocalTimeConverter {
 
         @TypeConverter
         @JvmStatic
-        fun toLocalTime(value : Int) : LocalTime {
-            return LocalTime.ofSecondOfDay(value.toLong())
+        fun toLocalTime(value : Int?) : LocalTime? = when(value) {
+            null -> null
+            else -> LocalTime.ofSecondOfDay(value.toLong())
         }
     }
 }

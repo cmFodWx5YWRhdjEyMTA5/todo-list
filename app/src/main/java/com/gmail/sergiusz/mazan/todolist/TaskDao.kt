@@ -12,6 +12,6 @@ interface TaskDao {
     @Insert
     fun insert(task : Task)
 
-    @Query("SELECT * from task where task_date = :date")
-    fun gettasksOfADay(date : LocalDate) : LiveData<List<Task>>
+    @Query("select * from task order by task_time")
+    fun getAllTasks() : LiveData<List<Task>>
 }
