@@ -6,4 +6,5 @@ import android.widget.TextView
 
 class TaskViewHolder(view : View) : RecyclerView.ViewHolder(view) {
     val descriptionTextView = view.findViewById(R.id.description_of_item) as TextView
+    val timeTextView = view.findViewById(R.id.time_of_item) as TextView
 }

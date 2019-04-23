@@ -3,6 +3,7 @@ package com.gmail.sergiusz.mazan.todolist
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import java.time.format.DateTimeFormatter
 
 class TodayTaskListAdapter : RecyclerView.Adapter<TaskViewHolder>() {
 
@@ -17,6 +18,7 @@ class TodayTaskListAdapter : RecyclerView.Adapter<TaskViewHolder>() {
 
     override fun onBindViewHolder(holder: TaskViewHolder, index: Int) {
         holder.descriptionTextView.text = tasks[index].description
+        holder.timeTextView.text = tasks[index].time?.format(DateTimeFormatter.ofPattern("HH:mm"))
     }
 
     fun setTasks(tasks : List<Task>) {
