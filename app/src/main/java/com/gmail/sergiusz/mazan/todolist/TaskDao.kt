@@ -14,4 +14,10 @@ interface TaskDao {
 
     @Query("select * from task order by task_time")
     fun getAllTasks() : LiveData<List<Task>>
+
+    @Query("select * from task where task_date = :date order by task_time")
+    fun getTasksFromDay(date : LocalDate) : LiveData<List<Task>>
+
+    @Query("select * from task where task_date < :date order by task_time")
+    fun getTasksEarlierThan(date : LocalDate) : LiveData<List<Task>>
 }

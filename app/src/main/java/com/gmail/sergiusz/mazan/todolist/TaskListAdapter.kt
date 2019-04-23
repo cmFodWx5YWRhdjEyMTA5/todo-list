@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import java.time.format.DateTimeFormatter
 
-class TodayTaskListAdapter : RecyclerView.Adapter<TaskViewHolder>() {
+class TaskListAdapter : RecyclerView.Adapter<TaskViewHolder>() {
 
     private var tasks = emptyList<Task>()
 
@@ -25,5 +25,4 @@ class TodayTaskListAdapter : RecyclerView.Adapter<TaskViewHolder>() {
         this.tasks = tasks
         notifyDataSetChanged()
     }
-
 }

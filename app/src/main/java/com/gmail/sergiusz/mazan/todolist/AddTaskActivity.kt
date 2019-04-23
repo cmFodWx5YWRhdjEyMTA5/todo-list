@@ -31,11 +31,11 @@ class AddTaskActivity : AppCompatActivity() {
 
         dateText.setOnClickListener {
             val onDateSetListener = { view : DatePicker, year : Int, month : Int, dayOfMonth : Int ->
-                date = LocalDate.of(year, month, dayOfMonth)
+                date = LocalDate.of(year, month+1, dayOfMonth)
                 updateTaskDate()
             }
 
-            DatePickerDialog(this@AddTaskActivity, onDateSetListener, date.year, date.monthValue,
+            DatePickerDialog(this@AddTaskActivity, onDateSetListener, date.year, date.monthValue-1,
                 date.dayOfMonth).show()
         }
 

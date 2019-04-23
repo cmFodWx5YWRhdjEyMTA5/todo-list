@@ -15,12 +15,16 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
     private val scope = CoroutineScope(Dispatchers.Main + job)
 
     private val repository : TaskRepository
-    val allTasks : LiveData<List<Task>>
+    val todayTasks : LiveData<List<Task>>
+    val tomorrowTasks : LiveData<List<Task>>
+    val overdueTasks : LiveData<List<Task>>
 
     init {
         val taskDao = TaskDatabase.getDatabase(application).taskDao()
         repository = TaskRepository(taskDao)
-        allTasks = repository.allTasks
+        todayTasks = repository.getTasksFromADay(LocalDate.now())
+        tomorrowTasks = repository.getTasksFromADay(LocalDate.now().plusDays(1))
+        overdueTasks = repository.getTasksEarlierThan(LocalDate.now())
     }
 
 

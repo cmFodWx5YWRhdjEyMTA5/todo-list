@@ -10,11 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class TaskListFragment : Fragment() {
+abstract class TaskListFragment : Fragment() {
 
     private lateinit var recyclerView : RecyclerView
-    private lateinit var model : TaskViewModel
-    private var adapter = TodayTaskListAdapter()
+    protected lateinit var model : TaskViewModel
+    protected var adapter = TaskListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,15 +23,11 @@ class TaskListFragment : Fragment() {
                 ViewModelProviders.of(this).get(TaskViewModel::class.java)
         } ?: throw Exception("Invalid activity")
 
-        model.allTasks.observe(this, Observer { item ->
-            item?.let {
-                adapter.setTasks(item)
-            }
-        })
+        setObservers()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_task_list, container)
+        val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 
         recyclerView = rootView.findViewById(R.id.task_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -39,4 +35,6 @@ class TaskListFragment : Fragment() {
 
         return rootView
     }
+
+    protected abstract fun setObservers()
 }
