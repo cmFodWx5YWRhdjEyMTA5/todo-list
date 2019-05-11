@@ -15,6 +15,7 @@ class AddTaskActivity : AppCompatActivity() {
 
     private var date : LocalDate = LocalDate.now()
     private var time : LocalTime? = null
+    private var priority : Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +51,21 @@ class AddTaskActivity : AppCompatActivity() {
                 nonNullTime.hour, nonNullTime.minute, true).show()
         }
 
+        val numberPicker = findViewById<NumberPicker>(R.id.numberPicker)
+        numberPicker.minValue = 1
+        numberPicker.maxValue = 5
+        numberPicker.value = 1
+
+        numberPicker.setOnValueChangedListener { np: NumberPicker, old: Int, new: Int ->
+            priority = new
+        }
+
         addButton.setOnClickListener {
             if(descriptionText.text == null || descriptionText.text.toString() == "")
                 Toast.makeText(this@AddTaskActivity, getString(R.string.null_description),
                     Toast.LENGTH_LONG).show()
             else {
-                val task = Task(descriptionText.text.toString(), date, time)
+                val task = Task(descriptionText.text.toString(), date, time, priority)
                 val intent = Intent()
                 intent.putExtra("task", task)
                 setResult(Activity.RESULT_OK, intent)

@@ -12,7 +12,8 @@ import java.time.LocalTime
 data class Task(
     @ColumnInfo(name = "task_description") @NonNull var description : String,
     @ColumnInfo(name = "task_date") @NonNull var date : LocalDate,
-    @ColumnInfo(name = "task_time") var time : LocalTime?
+    @ColumnInfo(name = "task_time") var time : LocalTime?,
+    @ColumnInfo(name = "task_priority") var priority : Int
 ) : Serializable {
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "task_id") var id : Int = 0
 }
