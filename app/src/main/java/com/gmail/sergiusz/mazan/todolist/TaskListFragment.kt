@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,17 @@ abstract class TaskListFragment : Fragment() {
         recyclerView = rootView.findViewById(R.id.task_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                model.delete(adapter.getItemAtPosition(viewHolder.adapterPosition))
+            }
+
+        }).attachToRecyclerView(recyclerView)
 
         return rootView
     }

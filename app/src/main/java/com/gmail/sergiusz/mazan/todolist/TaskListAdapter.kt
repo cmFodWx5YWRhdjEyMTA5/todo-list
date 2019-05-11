@@ -42,6 +42,8 @@ class TaskListAdapter(val listener : TaskItemClickListener) : RecyclerView.Adapt
         notifyDataSetChanged()
     }
 
+    fun getItemAtPosition(position : Int) = tasks[position]
+
     interface TaskItemClickListener {
         fun onItemClick(task : Task, view : View) : Boolean
     }
