@@ -32,6 +32,10 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
         repository.insert(task)
     }
 
+    fun delete(task: Task) = scope.launch(Dispatchers.IO) {
+        repository.delete(task)
+    }
+
     override fun onCleared() {
         super.onCleared()
         job.cancel()

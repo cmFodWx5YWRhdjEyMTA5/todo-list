@@ -1,6 +1,5 @@
 package com.gmail.sergiusz.mazan.todolist
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,7 +13,7 @@ abstract class TaskListFragment : Fragment() {
 
     private lateinit var recyclerView : RecyclerView
     protected lateinit var model : TaskViewModel
-    protected var adapter = TaskListAdapter()
+    protected lateinit var adapter : TaskListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +21,13 @@ abstract class TaskListFragment : Fragment() {
         model = activity?.run {
                 ViewModelProviders.of(this).get(TaskViewModel::class.java)
         } ?: throw Exception("Invalid activity")
+
+        adapter = TaskListAdapter(object : TaskListAdapter.TaskItemClickListener {
+            override fun onItemClick(task: Task, view: View) {
+                model.delete(task)
+            }
+
+        })
 
         setObservers()
     }
