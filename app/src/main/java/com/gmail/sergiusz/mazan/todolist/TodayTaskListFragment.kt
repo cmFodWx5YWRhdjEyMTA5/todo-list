@@ -7,7 +7,7 @@ class TodayTaskListFragment : TaskListFragment() {
     override fun setObservers() {
         model.todayTasks.observe(this, Observer { item ->
             item?.let {
-                adapter.setTasks(item)
+                adapter.submitList(item)
             }
         })
     }

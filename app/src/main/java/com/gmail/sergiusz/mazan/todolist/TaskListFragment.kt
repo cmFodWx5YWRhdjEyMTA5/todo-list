@@ -3,6 +3,7 @@ package com.gmail.sergiusz.mazan.todolist
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -23,7 +24,16 @@ abstract class TaskListFragment : Fragment() {
                 ViewModelProviders.of(this).get(TaskViewModel::class.java)
         } ?: throw Exception("Invalid activity")
 
-        adapter = TaskListAdapter(object : TaskListAdapter.TaskItemClickListener {
+        adapter = TaskListAdapter(object: DiffUtil.ItemCallback<Task>() {
+            override fun areItemsTheSame(first: Task, second: Task): Boolean {
+                return first.id == second.id
+            }
+
+            override fun areContentsTheSame(first: Task, second: Task): Boolean {
+                return first == second
+            }
+
+        },object : TaskListAdapter.TaskItemClickListener {
             override fun onItemClick(task: Task, view: View) : Boolean {
                 //TODO - add edit option
                 return false
