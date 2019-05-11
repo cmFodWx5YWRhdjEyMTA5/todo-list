@@ -9,14 +9,14 @@ import java.time.format.DateTimeFormatter
 
 class TaskListAdapter(val listener : TaskItemClickListener) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 
-    inner class TaskViewHolder(view : View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class TaskViewHolder(view : View) : RecyclerView.ViewHolder(view), View.OnLongClickListener {
 
         init {
-            view.setOnClickListener(this)
+            view.setOnLongClickListener(this)
         }
 
-        override fun onClick(v: View) {
-            listener.onItemClick(tasks[adapterPosition], v)
+        override fun onLongClick(v: View) : Boolean {
+            return listener.onItemClick(tasks[adapterPosition], v)
         }
 
         val descriptionTextView = view.findViewById(R.id.description_of_item) as TextView
@@ -43,6 +43,6 @@ class TaskListAdapter(val listener : TaskItemClickListener) : RecyclerView.Adapt
     }
 
     interface TaskItemClickListener {
-        fun onItemClick(task : Task, view : View)
+        fun onItemClick(task : Task, view : View) : Boolean
     }
 }

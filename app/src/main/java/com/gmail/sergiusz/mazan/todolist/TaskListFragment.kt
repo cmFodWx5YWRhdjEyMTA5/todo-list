@@ -23,8 +23,9 @@ abstract class TaskListFragment : Fragment() {
         } ?: throw Exception("Invalid activity")
 
         adapter = TaskListAdapter(object : TaskListAdapter.TaskItemClickListener {
-            override fun onItemClick(task: Task, view: View) {
-                model.delete(task)
+            override fun onItemClick(task: Task, view: View) : Boolean {
+                //TODO - add edit option
+                return false
             }
 
         })
