@@ -1,9 +1,14 @@
 package com.gmail.sergiusz.mazan.todolist
 
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -67,6 +72,28 @@ abstract class TaskListFragment : Fragment() {
                 }
 
                 snackbar.show()
+            }
+
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                                     dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+
+                val itemView = viewHolder.itemView
+                val background = ColorDrawable(Color.parseColor("#008577"))
+                background.setBounds(0, itemView.top,itemView.left + dX.toInt(), itemView.bottom)
+                background.draw(c)
+
+                val icon = ContextCompat.getDrawable(viewHolder.itemView.context, R.drawable.ic_check_circle_white_32dp)
+
+                val iconTop = itemView.top + (itemView.height - icon!!.intrinsicHeight) / 2
+                val iconMargin = (itemView.height - icon.intrinsicHeight) / 2
+                val iconLeft = itemView.left + iconMargin
+                val iconRight = itemView.left + icon.intrinsicWidth + iconMargin
+                val iconBottom = iconTop + icon.intrinsicHeight
+
+                icon.setBounds(iconLeft, iconTop,iconRight, iconBottom)
+                icon.draw(c)
             }
 
         }).attachToRecyclerView(recyclerView)
