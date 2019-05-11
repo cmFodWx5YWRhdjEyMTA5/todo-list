@@ -2,6 +2,7 @@ package com.gmail.sergiusz.mazan.todolist
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
@@ -57,7 +58,15 @@ abstract class TaskListFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                model.delete(adapter.getItemAtPosition(viewHolder.adapterPosition))
+                val taskToRemove = adapter.getItemAtPosition(viewHolder.adapterPosition)
+                model.delete(taskToRemove)
+
+                val snackbar = Snackbar.make(rootView, "Task was checked as done", Snackbar.LENGTH_LONG)
+                snackbar.setAction("Undo") {
+                    model.insert(taskToRemove)
+                }
+
+                snackbar.show()
             }
 
         }).attachToRecyclerView(recyclerView)
