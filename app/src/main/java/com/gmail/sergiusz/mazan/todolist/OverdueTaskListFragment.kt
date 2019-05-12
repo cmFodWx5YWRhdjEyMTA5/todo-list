@@ -2,14 +2,14 @@ package com.gmail.sergiusz.mazan.todolist
 
 import android.arch.lifecycle.Observer
 
-class TodayTaskListFragment : TaskListFragment() {
+class OverdueTaskListFragment : TaskListFragment() {
 
     override fun isDateVisible(): Boolean {
-        return false
+        return true
     }
 
     override fun setObservers() {
-        model.todayTasks.observe(this, Observer { item ->
+        model.overdueTasks.observe(this, Observer { item ->
             item?.let {
                 adapter.submitList(item)
             }

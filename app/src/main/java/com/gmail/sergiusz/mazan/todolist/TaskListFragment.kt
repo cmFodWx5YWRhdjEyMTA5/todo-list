@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -31,16 +30,7 @@ abstract class TaskListFragment : Fragment() {
                 ViewModelProviders.of(this).get(TaskViewModel::class.java)
         } ?: throw Exception("Invalid activity")
 
-        adapter = TaskListAdapter(object: DiffUtil.ItemCallback<Task>() {
-            override fun areItemsTheSame(first: Task, second: Task): Boolean {
-                return first.id == second.id
-            }
-
-            override fun areContentsTheSame(first: Task, second: Task): Boolean {
-                return first == second
-            }
-
-        },object : TaskListAdapter.TaskItemClickListener {
+        adapter = TaskListAdapter(object : TaskListAdapter.TaskItemClickListener {
             override fun onItemClick(task: Task, view: View) : Boolean {
                 val intent = Intent(activity, AddEditTaskActivity::class.java)
                 intent.putExtra("taskToEdit", task)
@@ -48,7 +38,7 @@ abstract class TaskListFragment : Fragment() {
                 return true
             }
 
-        })
+        }, isDateVisible())
 
         setObservers()
     }
@@ -112,4 +102,5 @@ abstract class TaskListFragment : Fragment() {
     }
 
     protected abstract fun setObservers()
+    protected abstract fun isDateVisible() : Boolean
 }
