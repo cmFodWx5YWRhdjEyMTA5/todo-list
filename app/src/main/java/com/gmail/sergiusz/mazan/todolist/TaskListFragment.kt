@@ -105,11 +105,9 @@ abstract class TaskListFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(resultCode == Activity.RESULT_OK) {
+        if(resultCode == Activity.RESULT_OK && requestCode == MainActivity.EDIT_TASK_REQUEST) {
             val task : Task = data?.getSerializableExtra("task") as Task
-            if(requestCode == MainActivity.EDIT_TASK_REQUEST) {
-                model.update(task)
-            }
+            model.update(task)
         }
     }
 

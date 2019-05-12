@@ -51,11 +51,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK) {
+        if(resultCode == Activity.RESULT_OK && requestCode == ADD_TASK_REQUEST) {
             val task : Task = data?.getSerializableExtra("task") as Task
-            if(requestCode == ADD_TASK_REQUEST) {
-                viewModel.insert(task)
-            }
+            viewModel.insert(task)
         }
     }
 }
