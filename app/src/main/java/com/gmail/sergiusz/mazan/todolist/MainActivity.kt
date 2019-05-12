@@ -3,17 +3,20 @@ package com.gmail.sergiusz.mazan.todolist
 import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
+import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
+import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
         const val ADD_TASK_REQUEST = 1
@@ -37,14 +40,12 @@ class MainActivity : AppCompatActivity() {
             R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        //supportActionBar?.setHomeButtonEnabled(true)
 
-        val viewPager = findViewById<ViewPager>(R.id.viewpager)
-        val viewAdapter = TaskPagerAdapter(this, supportFragmentManager)
-        viewPager.adapter = viewAdapter
+        nav_view.setNavigationItemSelectedListener(this)
 
-        val taskTab = findViewById<TabLayout>(R.id.task_tab)
-        taskTab.setupWithViewPager(viewPager)
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, HomeFragment())
+        transaction.commit()
 
         viewModel = ViewModelProviders.of(this).get(TaskViewModel::class.java)
     }
@@ -74,7 +75,32 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         toggle.syncState()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val fragment : Fragment
+        when(item.itemId) {
+            R.id.nav_home -> {
+                fragment = HomeFragment()
+                setTitle(R.string.app_name)
+            }
+            R.id.nav_all_tasks -> {
+                fragment = AllTaskListFragment()
+                setTitle(R.string.all_tasks)
+            }
+            else -> {
+                fragment = HomeFragment() //TODO
+                setTitle(R.string.done)
+            }
+        }
+
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.commit()
+
+        drawer.closeDrawer(GravityCompat.START)
+
+        return true
     }
 }
