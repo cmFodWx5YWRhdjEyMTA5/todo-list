@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 
@@ -18,11 +21,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var viewModel : TaskViewModel
+    private lateinit var drawer: DrawerLayout
+    private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.main_toolbar))
+
+        val toolbar: Toolbar = findViewById(R.id.main_toolbar)
+        setSupportActionBar(toolbar)
+
+        drawer = findViewById(R.id.drawer_layout)
+
+        toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close)
+        drawer.addDrawerListener(toggle)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar?.setHomeButtonEnabled(true)
 
         val viewPager = findViewById<ViewPager>(R.id.viewpager)
         val viewAdapter = TaskPagerAdapter(this, supportFragmentManager)
@@ -55,5 +70,11 @@ class MainActivity : AppCompatActivity() {
             val task : Task = data?.getSerializableExtra("task") as Task
             viewModel.insert(task)
         }
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        toggle.syncState()
     }
 }

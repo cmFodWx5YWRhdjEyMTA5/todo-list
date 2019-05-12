@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home"
+          android:icon="@drawable/ic_home_grey_24dp"
+          android:title="@string/home"/>
+    <item android:id="@+id/nav_all_tasks"
+          android:icon="@drawable/ic_all_inclusive_grey_24dp"
+          android:title="@string/all_tasks"/>
+    <item android:id="@+id/nav_done_tasks"
+          android:icon="@drawable/ic_done_all_green_24dp"
+          android:title="@string/done"/>
+</menu>
