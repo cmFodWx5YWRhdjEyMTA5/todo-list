@@ -9,15 +9,13 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val GET_TASK_REQUEST = 1
+    companion object {
+        const val ADD_TASK_REQUEST = 1
+        const val EDIT_TASK_REQUEST = 2
+    }
 
     private lateinit var viewModel : TaskViewModel
 
@@ -43,8 +41,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?) = when(item?.itemId) {
         R.id.add_action -> {
-            intent = Intent(this, AddTaskActivity::class.java)
-            startActivityForResult(intent, GET_TASK_REQUEST)
+            intent = Intent(this, AddEditTaskActivity::class.java)
+            startActivityForResult(intent, ADD_TASK_REQUEST)
             true
         }
 
@@ -52,9 +50,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == GET_TASK_REQUEST && resultCode == Activity.RESULT_OK) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
             val task : Task = data?.getSerializableExtra("task") as Task
-            viewModel.insert(task)
+            if(requestCode == ADD_TASK_REQUEST) {
+                viewModel.insert(task)
+            }
         }
     }
 }

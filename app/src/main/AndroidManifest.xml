@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".AddTaskActivity"
+        <activity android:name=".AddEditTaskActivity"
                   android:label="@string/add_task_title"
                   android:parentActivityName=".MainActivity">
 

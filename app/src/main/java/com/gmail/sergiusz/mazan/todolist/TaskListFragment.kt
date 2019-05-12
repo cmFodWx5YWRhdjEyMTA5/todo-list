@@ -1,6 +1,8 @@
 package com.gmail.sergiusz.mazan.todolist
 
+import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -40,8 +42,10 @@ abstract class TaskListFragment : Fragment() {
 
         },object : TaskListAdapter.TaskItemClickListener {
             override fun onItemClick(task: Task, view: View) : Boolean {
-                //TODO - add edit option
-                return false
+                val intent = Intent(activity, AddEditTaskActivity::class.java)
+                intent.putExtra("taskToEdit", task)
+                startActivityForResult(intent, MainActivity.EDIT_TASK_REQUEST)
+                return true
             }
 
         })
@@ -98,6 +102,15 @@ abstract class TaskListFragment : Fragment() {
         }).attachToRecyclerView(recyclerView)
 
         return rootView
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK) {
+            val task : Task = data?.getSerializableExtra("task") as Task
+            if(requestCode == MainActivity.EDIT_TASK_REQUEST) {
+                model.update(task)
+            }
+        }
     }
 
     protected abstract fun setObservers()
