@@ -5,6 +5,8 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.*
 import java.time.LocalDate
 import java.time.LocalTime
@@ -13,6 +15,8 @@ import java.time.format.DateTimeFormatter
 class AddEditTaskActivity : AppCompatActivity() {
 
     private lateinit var task : Task
+    private lateinit var descriptionText : EditText
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +24,9 @@ class AddEditTaskActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.add_task_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val addButton : Button = findViewById(R.id.addButton)
         val dateText : EditText = findViewById(R.id.taskDate)
         val timeText : EditText = findViewById(R.id.taskTime)
-        val descriptionText : EditText = findViewById(R.id.taskDescription)
+        descriptionText = findViewById(R.id.taskDescription)
 
         if(intent.hasExtra("taskToEdit")) {
             title = getString(R.string.edit_task_title)
@@ -67,8 +70,15 @@ class AddEditTaskActivity : AppCompatActivity() {
         numberPicker.setOnValueChangedListener { np: NumberPicker, old: Int, new: Int ->
             task.priority = new
         }
+    }
 
-        addButton.setOnClickListener {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_add_edit, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?) = when(item?.itemId) {
+        R.id.submit_action -> {
             if(descriptionText.text == null || descriptionText.text.toString() == "")
                 Toast.makeText(this@AddEditTaskActivity, getString(R.string.null_description),
                     Toast.LENGTH_LONG).show()
@@ -78,7 +88,10 @@ class AddEditTaskActivity : AppCompatActivity() {
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }
+            true
         }
+
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun updateTaskDate() {
