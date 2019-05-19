@@ -6,14 +6,16 @@ import java.time.LocalDate
 
 class TaskRepository(private val taskDao :TaskDao) {
 
-    val allTasks = taskDao.getAllTasks()
+    val allUndoneTasks = taskDao.getAllUndoneTasks()
 
-    fun getTasksFromADay(date : LocalDate) : LiveData<List<Task>> {
-        return taskDao.getTasksFromDay(date)
+    val allDoneTasks = taskDao.getAllDoneTask()
+
+    fun getUndoneTasksFromADay(date : LocalDate) : LiveData<List<Task>> {
+        return taskDao.getUndoneTasksFromDay(date)
     }
 
-    fun getTasksEarlierThan(date : LocalDate) : LiveData<List<Task>> {
-        return taskDao.getTasksEarlierThan(date)
+    fun getUndoneTasksEarlierThan(date : LocalDate) : LiveData<List<Task>> {
+        return taskDao.getUndoneTasksEarlierThan(date)
     }
 
     @WorkerThread

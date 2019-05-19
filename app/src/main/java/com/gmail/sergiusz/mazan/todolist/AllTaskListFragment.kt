@@ -2,10 +2,10 @@ package com.gmail.sergiusz.mazan.todolist
 
 import android.arch.lifecycle.Observer
 
-class AllTaskListFragment : TaskListFragment() {
+class AllTaskListFragment : UndoneTaskListFragment() {
 
     override fun setObservers() {
-        model.allTasks.observe(this, Observer { item ->
+        model.allUndoneTasks.observe(this, Observer { item ->
             item?.let {
                 adapter.submitList(item)
             }

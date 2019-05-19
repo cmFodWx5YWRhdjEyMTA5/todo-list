@@ -3,7 +3,7 @@ package com.gmail.sergiusz.mazan.todolist
 import android.arch.persistence.room.*
 import android.content.Context
 
-@Database(entities = [Task::class], version = 2)
+@Database(entities = [Task::class], version = 3)
 @TypeConverters(*[LocalDateConverter::class, LocalTimeConverter::class])
 abstract class TaskDatabase : RoomDatabase() {
 

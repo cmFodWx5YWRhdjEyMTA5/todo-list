@@ -4,6 +4,7 @@ import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -11,7 +12,6 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -48,21 +48,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         transaction.commit()
 
         viewModel = ViewModelProviders.of(this).get(TaskViewModel::class.java)
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?) = when(item?.itemId) {
-        R.id.add_action -> {
+        val addButton = findViewById<FloatingActionButton>(R.id.add_button)
+        addButton.setOnClickListener {
             intent = Intent(this, AddEditTaskActivity::class.java)
             startActivityForResult(intent, ADD_TASK_REQUEST)
-            true
         }
-
-        else -> super.onOptionsItemSelected(item)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,7 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 setTitle(R.string.all_tasks)
             }
             else -> {
-                fragment = HomeFragment() //TODO
+                fragment = DoneTaskListFragment()
                 setTitle(R.string.done)
             }
         }

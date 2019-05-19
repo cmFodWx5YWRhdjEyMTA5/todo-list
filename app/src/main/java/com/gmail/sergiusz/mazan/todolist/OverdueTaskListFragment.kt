@@ -2,7 +2,7 @@ package com.gmail.sergiusz.mazan.todolist
 
 import android.arch.lifecycle.Observer
 
-class OverdueTaskListFragment : TaskListFragment() {
+class OverdueTaskListFragment : UndoneTaskListFragment() {
 
     override fun isDateVisible(): Boolean {
         return true

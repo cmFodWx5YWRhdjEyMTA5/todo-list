@@ -35,7 +35,7 @@ class AddEditTaskActivity : AppCompatActivity() {
         }
         else {
             title = getString(R.string.add_task_title)
-            task = Task("", LocalDate.now(), null, 1)
+            task = Task("", LocalDate.now(), null, 1, false)
         }
 
         updateTaskDate()

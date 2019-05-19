@@ -16,12 +16,15 @@ interface TaskDao {
     @Update
     fun update(task: Task)
 
-    @Query("select * from task order by task_date, task_time")
-    fun getAllTasks() : LiveData<List<Task>>
+    @Query("select * from task where is_done = 1 order by task_date, task_time")
+    fun getAllDoneTask() : LiveData<List<Task>>
 
-    @Query("select * from task where task_date = :date order by task_time")
-    fun getTasksFromDay(date : LocalDate) : LiveData<List<Task>>
+    @Query("select * from task where is_done = 0 order by task_date, task_time")
+    fun getAllUndoneTasks() : LiveData<List<Task>>
 
-    @Query("select * from task where task_date < :date order by task_date, task_time")
-    fun getTasksEarlierThan(date : LocalDate) : LiveData<List<Task>>
+    @Query("select * from task where task_date = :date and is_done = 0 order by task_time")
+    fun getUndoneTasksFromDay(date : LocalDate) : LiveData<List<Task>>
+
+    @Query("select * from task where task_date < :date and is_done = 0 order by task_date, task_time")
+    fun getUndoneTasksEarlierThan(date : LocalDate) : LiveData<List<Task>>
 }
