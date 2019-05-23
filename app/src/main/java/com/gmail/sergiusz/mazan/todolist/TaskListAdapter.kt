@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.SelectionTracker
 import java.time.format.DateTimeFormatter
 
 class TaskListAdapter(val listener : TaskItemClickListener, val isDateVisible : Boolean)
     : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(TaskDiffCallback()) {
 
-    inner class TaskViewHolder(view : View) : RecyclerView.ViewHolder(view), View.OnLongClickListener {
+    var tracker: SelectionTracker<Long>? = null
+
+    inner class TaskViewHolder(view : View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         val descriptionTextView = view.findViewById(R.id.description_of_item) as TextView
         val timeTextView = view.findViewById(R.id.time_of_item) as TextView
@@ -20,11 +24,18 @@ class TaskListAdapter(val listener : TaskItemClickListener, val isDateVisible : 
         val dateTextView = view.findViewById(R.id.date_of_item) as TextView
 
         init {
-            view.setOnLongClickListener(this)
+            view.setOnClickListener(this)
         }
 
-        override fun onLongClick(view: View) : Boolean {
-            return listener.onItemClick(getItem(adapterPosition), view)
+        override fun onClick(view: View) {
+            listener.onItemClick(getItem(adapterPosition), view)
+        }
+
+        fun getItemDetails() : ItemDetailsLookup.ItemDetails<Long> = object : ItemDetailsLookup.ItemDetails<Long>() {
+            override fun getSelectionKey(): Long? = adapterPosition.toLong()
+
+            override fun getPosition(): Int = adapterPosition
+
         }
     }
 
@@ -47,6 +58,10 @@ class TaskListAdapter(val listener : TaskItemClickListener, val isDateVisible : 
             3 -> holder.priorityImageView.setImageResource(R.drawable.ic_flag_yellow_24dp)
             4 -> holder.priorityImageView.setImageResource(R.drawable.ic_flag_orange_24dp)
             5 -> holder.priorityImageView.setImageResource(R.drawable.ic_flag_red_24dp)
+        }
+
+        tracker?.let {
+            holder.itemView.isActivated = it.isSelected(index.toLong())
         }
     }
 

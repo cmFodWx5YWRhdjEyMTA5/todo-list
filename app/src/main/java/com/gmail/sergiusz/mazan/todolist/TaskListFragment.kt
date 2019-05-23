@@ -5,18 +5,23 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.view.ActionMode
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StorageStrategy
 
 abstract class TaskListFragment : Fragment() {
 
     private lateinit var recyclerView : RecyclerView
     protected lateinit var model : TaskViewModel
     protected lateinit var adapter : TaskListAdapter
+    private var actionMode : ActionMode? = null
+    private var tasks : ArrayList<Task> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +49,70 @@ abstract class TaskListFragment : Fragment() {
         recyclerView = rootView.findViewById(R.id.task_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
+
+        val tracker = SelectionTracker.Builder<Long>(
+            "mySelection",
+            recyclerView,
+            TaskKeyProvider(),
+            TaskDetailsLookup(recyclerView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(
+            SelectionPredicates.createSelectAnything()
+        ).build()
+
+        val actionModeCallback = object : ActionMode.Callback {
+
+            override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+                val menuInflater: MenuInflater = mode.menuInflater
+                menuInflater.inflate(R.menu.action_menu, menu)
+                return true
+            }
+
+            override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+                return false
+            }
+
+            override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                return when (item.itemId) {
+                    R.id.delete_action -> {
+                        for(task in tasks) {
+                            model.delete(task)
+                        }
+                        mode.finish()
+                        return true
+                    }
+                    else -> false
+                }
+            }
+
+            override fun onDestroyActionMode(mode: ActionMode) {
+                actionMode = null
+                tasks.clear()
+                tracker.clearSelection()
+            }
+        }
+
+        tracker?.addObserver(
+            object : SelectionTracker.SelectionObserver<Long>() {
+                override fun onItemStateChanged(key: Long, selected: Boolean) {
+                    if(actionMode == null) {
+                        actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
+                    }
+
+                    if(tracker.selection.isEmpty) {
+                        if(actionMode != null) {
+                            actionMode!!.finish()
+                        }
+                    }
+
+                    if(selected)
+                        tasks.add(adapter.getItemAtPosition(key.toInt()))
+                    else
+                        tasks.remove(adapter.getItemAtPosition(key.toInt()))
+                }
+            })
+
+        adapter.tracker = tracker
 
         ItemTouchHelper(getCallback()).attachToRecyclerView(recyclerView)
 

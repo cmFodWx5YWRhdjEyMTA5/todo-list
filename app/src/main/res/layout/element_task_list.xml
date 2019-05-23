@@ -8,7 +8,7 @@
                                              android:paddingEnd="8dp"
                                              android:paddingTop="8dp"
                                              android:paddingBottom="8dp"
-                                             android:background="@drawable/border_layout">
+                                             android:background="@drawable/selector">
 
     <TextView android:id="@+id/description_of_item"
               android:text="Example"
