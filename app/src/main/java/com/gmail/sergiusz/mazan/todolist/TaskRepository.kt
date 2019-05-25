@@ -18,6 +18,14 @@ class TaskRepository(private val taskDao :TaskDao) {
         return taskDao.getUndoneTasksEarlierThan(date)
     }
 
+    fun getUndoneTasksFromADaySync(date : LocalDate) : List<Task> {
+        return taskDao.getUndoneTasksFromDaySync(date)
+    }
+
+    fun getUndoneTasksEarlierThanSync(date : LocalDate) : List<Task> {
+        return taskDao.getUndoneTasksEarlierThanSync(date)
+    }
+
     @WorkerThread
     fun insert(task : Task) = taskDao.insert(task)
 

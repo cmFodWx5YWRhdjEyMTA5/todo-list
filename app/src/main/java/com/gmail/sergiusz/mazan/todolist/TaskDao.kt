@@ -27,4 +27,10 @@ interface TaskDao {
 
     @Query("select * from task where task_date < :date and is_done = 0 order by task_date, task_time")
     fun getUndoneTasksEarlierThan(date : LocalDate) : LiveData<List<Task>>
+
+    @Query("select * from task where task_date = :date and is_done = 0 order by task_time")
+    fun getUndoneTasksFromDaySync(date : LocalDate) : List<Task>
+
+    @Query("select * from task where task_date < :date and is_done = 0 order by task_date, task_time")
+    fun getUndoneTasksEarlierThanSync(date : LocalDate) : List<Task>
 }
