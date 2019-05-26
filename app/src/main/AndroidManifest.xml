@@ -25,6 +25,7 @@
 
         </activity>
         <receiver android:name=".DailyNotificationReceiver"/>
+        <receiver android:name=".TaskNotificationReceiver"/>
     </application>
 
 </manifest>

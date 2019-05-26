@@ -8,7 +8,7 @@ import java.time.LocalDate
 interface TaskDao {
 
     @Insert
-    fun insert(task : Task)
+    fun insert(task : Task) : Long
 
     @Delete
     fun delete(task: Task)
@@ -33,4 +33,7 @@ interface TaskDao {
 
     @Query("select * from task where task_date < :date and is_done = 0 order by task_date, task_time")
     fun getUndoneTasksEarlierThanSync(date : LocalDate) : List<Task>
+
+    @Query("select * from task where task_id = :taskId")
+    fun getTask(taskId : Long) : Task
 }

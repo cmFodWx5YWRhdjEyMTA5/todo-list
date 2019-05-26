@@ -26,6 +26,7 @@ class AddEditTaskActivity : AppCompatActivity() {
 
         val dateText : EditText = findViewById(R.id.taskDate)
         val timeText : EditText = findViewById(R.id.taskTime)
+        val cancelTime : ImageView = findViewById(R.id.cancelTime)
         descriptionText = findViewById(R.id.taskDescription)
 
         if(intent.hasExtra("taskToEdit")) {
@@ -70,6 +71,11 @@ class AddEditTaskActivity : AppCompatActivity() {
         numberPicker.setOnValueChangedListener { np: NumberPicker, old: Int, new: Int ->
             task.priority = new
         }
+
+        cancelTime.setOnClickListener {
+            task.time = null
+            updateTaskTime()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -101,10 +107,11 @@ class AddEditTaskActivity : AppCompatActivity() {
     }
 
     private fun updateTaskTime() {
+        val timeText : EditText = findViewById(R.id.taskTime)
         if(task.time != null) {
-            val timeText : EditText = findViewById(R.id.taskTime)
             val formatter = DateTimeFormatter.ofPattern("HH:mm")
             timeText.setText(task.time?.format(formatter))
-        }
+        } else
+            timeText.text = null
     }
 }

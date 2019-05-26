@@ -26,8 +26,10 @@ class TaskRepository(private val taskDao :TaskDao) {
         return taskDao.getUndoneTasksEarlierThanSync(date)
     }
 
+    fun getTaskWithId(id : Long) : Task = taskDao.getTask(id)
+
     @WorkerThread
-    fun insert(task : Task) = taskDao.insert(task)
+    fun insert(task : Task) : Long = taskDao.insert(task)
 
     @WorkerThread
     fun delete(task: Task) = taskDao.delete(task)

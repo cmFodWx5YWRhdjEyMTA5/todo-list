@@ -8,23 +8,44 @@ import java.util.*
 
 class TODOList : Application() {
 
+
+    companion object {
+        const val DAILY_REMINDER_CHANNEL_ID = "daily_reminder_channel"
+        const val TASK_REMINDER_CHANNEL_ID = "task_reminder_channel"
+    }
+
     override fun onCreate() {
         super.onCreate()
 
-        createNotificationChannel()
+        createNotificationChannels()
         setAlarm()
     }
 
-    private fun createNotificationChannel() {
+    private fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Daily reminder"
-            val description = "Reminder saying how much tasks you have to do today"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("daily_reminder_channel", name, importance)
-            channel.description = description
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
+            createDailyNotificationChannel()
+            createTaskNotificationChannel()
         }
+    }
+
+    private fun createDailyNotificationChannel() {
+        val name = "Daily reminder"
+        val description = "Reminder saying how much tasks you have to do today"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(DAILY_REMINDER_CHANNEL_ID, name, importance)
+        channel.description = description
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    private fun createTaskNotificationChannel() {
+        val name = "Task reminder"
+        val description = "Reminder informing about incoming task"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(TASK_REMINDER_CHANNEL_ID, name, importance)
+        channel.description = description
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun setAlarm() {
