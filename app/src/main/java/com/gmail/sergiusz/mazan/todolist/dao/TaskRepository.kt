@@ -51,4 +51,7 @@ class TaskRepository(private val taskDatabase: TaskDatabase) {
 
     @WorkerThread
     fun update(project : Project) = taskDatabase.projectDao().update(project)
+
+    @WorkerThread
+    fun deleteTasksOfProject(projectId: Long) = taskDatabase.taskDao().deleteTasksOfProject(projectId)
 }

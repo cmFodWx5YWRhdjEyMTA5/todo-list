@@ -13,6 +13,9 @@ interface TaskDao {
     @Delete
     fun delete(task: Task)
 
+    @Query("delete from task where project_id = :projectId")
+    fun deleteTasksOfProject(projectId: Long)
+
     @Update
     fun update(task: Task)
 

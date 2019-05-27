@@ -93,6 +93,7 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
 
     fun delete(project: Project) = scope.launch(Dispatchers.IO) {
         repository.delete(project)
+        repository.deleteTasksOfProject(project.id)
     }
 
     fun update(task: Task) = scope.launch(Dispatchers.IO) {
@@ -134,7 +135,7 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
     }
 
     fun update(project: Project) = scope.launch(Dispatchers.IO) {
-        repository.update   (project)
+        repository.update(project)
     }
 
     override fun onCleared() {
