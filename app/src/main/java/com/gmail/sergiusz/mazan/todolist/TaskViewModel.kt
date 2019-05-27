@@ -5,9 +5,14 @@ import android.app.Application
 import android.app.PendingIntent
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Transformations
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.ContextCompat.getSystemService
+import com.gmail.sergiusz.mazan.todolist.dao.Project
+import com.gmail.sergiusz.mazan.todolist.dao.Task
+import com.gmail.sergiusz.mazan.todolist.dao.TaskDatabase
+import com.gmail.sergiusz.mazan.todolist.dao.TaskRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,24 +25,43 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
     private var job = Job()
     private val scope = CoroutineScope(Dispatchers.Main + job)
 
-    private val repository : TaskRepository
+    private val repository : TaskRepository =
+        TaskRepository(
+            TaskDatabase.getDatabase(application)
+        )
 
     val todayTasks : LiveData<List<Task>>
     val tomorrowTasks : LiveData<List<Task>>
     val overdueTasks : LiveData<List<Task>>
     val allDoneTasks : LiveData<List<Task>>
     val allUndoneTasks : LiveData<List<Task>>
+    val allProjects : LiveData<List<Project>>
+    val doneProjectTasks : LiveData<List<Task>>
+    val undoneProjectTasks : LiveData<List<Task>>
+    val projectId : MutableLiveData<Long> = MutableLiveData<Long>()
 
     init {
-        val taskDao = TaskDatabase.getDatabase(application).taskDao()
-        repository = TaskRepository(taskDao)
         allUndoneTasks = repository.allUndoneTasks
         allDoneTasks = repository.allDoneTasks
         todayTasks = repository.getUndoneTasksFromADay(LocalDate.now())
         tomorrowTasks = repository.getUndoneTasksFromADay(LocalDate.now().plusDays(1))
         overdueTasks = repository.getUndoneTasksEarlierThan(LocalDate.now())
+        allProjects = repository.allProjects
+        doneProjectTasks = Transformations.switchMap(projectId) {
+            repository.getDoneTasksOfProject(it)
+        }
+        undoneProjectTasks = Transformations.switchMap(projectId) {
+            repository.getUndoneTasksOfProject(it)
+        }
     }
 
+    fun setProjectId(value : Long) {
+        this.projectId.value = value
+    }
+
+    fun insert(project : Project) = scope.launch(Dispatchers.IO) {
+        repository.insert(project)
+    }
 
     fun insert(task: Task) = scope.launch(Dispatchers.IO) {
         val taskId = repository.insert(task)

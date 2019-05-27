@@ -3,6 +3,7 @@ package com.gmail.sergiusz.mazan.todolist
 import android.view.MotionEvent
 import androidx.recyclerview.selection.ItemDetailsLookup
 import android.support.v7.widget.RecyclerView
+import com.gmail.sergiusz.mazan.todolist.adapter.TaskListAdapter
 
 
 class TaskDetailsLookup(private val recyclerView : RecyclerView) : ItemDetailsLookup<Long>() {

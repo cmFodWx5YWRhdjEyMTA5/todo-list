@@ -12,18 +12,26 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".AddEditTaskActivity"
+        <activity android:name=".activity.AddEditTaskActivity"
                   android:label="@string/add_task_title"
-                  android:parentActivityName=".MainActivity">
+                  android:parentActivityName=".activity.MainActivity">
 
         </activity>
+
+        <activity android:name=".activity.AddEditProjectActivity"
+                  android:label="@string/add_project_title"
+                  android:parentActivityName=".activity.MainActivity">
+
+        </activity>
+
+
         <receiver android:name=".DailyNotificationReceiver"/>
         <receiver android:name=".TaskNotificationReceiver"/>
     </application>

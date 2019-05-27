@@ -1,4 +1,4 @@
-package com.gmail.sergiusz.mazan.todolist
+package com.gmail.sergiusz.mazan.todolist.dao
 
 import android.arch.persistence.room.TypeConverter
 import java.time.LocalTime

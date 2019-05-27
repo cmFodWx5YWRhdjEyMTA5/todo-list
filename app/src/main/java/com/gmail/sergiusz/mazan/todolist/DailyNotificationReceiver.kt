@@ -7,6 +7,9 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
+import com.gmail.sergiusz.mazan.todolist.activity.MainActivity
+import com.gmail.sergiusz.mazan.todolist.dao.TaskDatabase
+import com.gmail.sergiusz.mazan.todolist.dao.TaskRepository
 import java.time.LocalDate
 
 class DailyNotificationReceiver : BroadcastReceiver() {
@@ -22,7 +25,9 @@ class DailyNotificationReceiver : BroadcastReceiver() {
         : AsyncTask<Context, Unit, Unit>() {
 
         override fun doInBackground(vararg params: Context) {
-            val repository = TaskRepository(TaskDatabase.getDatabase(params[0]).taskDao())
+            val repository = TaskRepository(
+                TaskDatabase.getDatabase(params[0])
+            )
             val todayTasksAmount = repository.getUndoneTasksFromADaySync(LocalDate.now()).size
             val overdueTasksAmount = repository.getUndoneTasksEarlierThanSync(LocalDate.now()).size
 

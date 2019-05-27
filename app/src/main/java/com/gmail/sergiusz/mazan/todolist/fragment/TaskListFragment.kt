@@ -1,4 +1,4 @@
-package com.gmail.sergiusz.mazan.todolist
+package com.gmail.sergiusz.mazan.todolist.fragment
 
 import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
@@ -14,6 +14,11 @@ import android.view.*
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
+import com.gmail.sergiusz.mazan.todolist.*
+import com.gmail.sergiusz.mazan.todolist.activity.AddEditTaskActivity
+import com.gmail.sergiusz.mazan.todolist.activity.MainActivity
+import com.gmail.sergiusz.mazan.todolist.adapter.TaskListAdapter
+import com.gmail.sergiusz.mazan.todolist.dao.Task
 
 abstract class TaskListFragment : Fragment() {
 
@@ -30,17 +35,21 @@ abstract class TaskListFragment : Fragment() {
                 ViewModelProviders.of(this).get(TaskViewModel::class.java)
         } ?: throw Exception("Invalid activity")
 
-        adapter = TaskListAdapter(object : TaskListAdapter.TaskItemClickListener {
-            override fun onItemClick(task: Task, view: View) : Boolean {
+        adapter = TaskListAdapter(object :
+            TaskListAdapter.TaskItemClickListener {
+            override fun onItemClick(task: Task, view: View): Boolean {
                 val intent = Intent(activity, AddEditTaskActivity::class.java)
                 intent.putExtra("taskToEdit", task)
-                startActivityForResult(intent, MainActivity.EDIT_TASK_REQUEST)
+                startActivityForResult(
+                    intent,
+                    MainActivity.EDIT_TASK_REQUEST
+                )
                 return true
             }
 
         }, isDateVisible())
 
-        setObservers()
+        setObservers(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -126,7 +135,7 @@ abstract class TaskListFragment : Fragment() {
         }
     }
 
-    protected abstract fun setObservers()
+    protected abstract fun setObservers(savedInstanceState: Bundle?)
     protected abstract fun isDateVisible() : Boolean
     protected abstract fun getCallback() : ItemTouchHelper.Callback
 }

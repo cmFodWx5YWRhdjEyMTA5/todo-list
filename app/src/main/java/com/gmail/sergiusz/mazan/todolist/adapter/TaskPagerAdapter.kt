@@ -1,9 +1,13 @@
-package com.gmail.sergiusz.mazan.todolist
+package com.gmail.sergiusz.mazan.todolist.adapter
 
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.gmail.sergiusz.mazan.todolist.R
+import com.gmail.sergiusz.mazan.todolist.fragment.OverdueTaskListFragment
+import com.gmail.sergiusz.mazan.todolist.fragment.TodayTaskListFragment
+import com.gmail.sergiusz.mazan.todolist.fragment.TomorrowTaskListFragment
 
 class TaskPagerAdapter(private val context : Context, manager : FragmentManager) : FragmentPagerAdapter(manager) {
 

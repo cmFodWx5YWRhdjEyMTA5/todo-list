@@ -1,4 +1,4 @@
-package com.gmail.sergiusz.mazan.todolist
+package com.gmail.sergiusz.mazan.todolist.adapter
 
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.widget.RecyclerView
@@ -9,6 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
+import com.gmail.sergiusz.mazan.todolist.R
+import com.gmail.sergiusz.mazan.todolist.TaskDiffCallback
+import com.gmail.sergiusz.mazan.todolist.dao.Task
 import java.time.format.DateTimeFormatter
 
 class TaskListAdapter(val listener : TaskItemClickListener, val isDateVisible : Boolean)

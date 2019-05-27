@@ -10,6 +10,7 @@
     <string name="task_description">Description&#8230;</string>
     <string name="task_time">Time(optional)&#8230;</string>
     <string name="null_description">Enter description</string>
+    <string name="null_title">Enter title</string>
     <string name="task_added">Task has been added</string>
     <string name="priority">Priority:</string>
     <string name="navigation_drawer_open">Open</string>
@@ -18,4 +19,9 @@
     <string name="home">Home</string>
     <string name="all_tasks">All Tasks</string>
     <string name="done">Done</string>
+    <string name="projects">Projects</string>
+    <string name="add_project_title">Add Project</string>
+    <string name="project_title">Title of project&#8230;</string>
+    <string name="project_deadline">Deadline(optional)&#8230;</string>
+    <string name="todo">TODO</string>
 </resources>

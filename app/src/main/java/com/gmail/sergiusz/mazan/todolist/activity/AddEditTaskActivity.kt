@@ -1,13 +1,16 @@
-package com.gmail.sergiusz.mazan.todolist
+package com.gmail.sergiusz.mazan.todolist.activity
 
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
+import com.gmail.sergiusz.mazan.todolist.R
+import com.gmail.sergiusz.mazan.todolist.dao.Task
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -36,7 +39,9 @@ class AddEditTaskActivity : AppCompatActivity() {
         }
         else {
             title = getString(R.string.add_task_title)
-            task = Task("", LocalDate.now(), null, 1, false)
+            var projectId : Long? = intent.getLongExtra("projectId", -1)
+            projectId = if(projectId == -1L) null else projectId
+            task = Task("", LocalDate.now(), null, 1, false, projectId)
         }
 
         updateTaskDate()

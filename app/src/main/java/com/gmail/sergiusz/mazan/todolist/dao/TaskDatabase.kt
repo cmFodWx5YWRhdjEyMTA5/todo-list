@@ -1,13 +1,14 @@
-package com.gmail.sergiusz.mazan.todolist
+package com.gmail.sergiusz.mazan.todolist.dao
 
 import android.arch.persistence.room.*
 import android.content.Context
 
-@Database(entities = [Task::class], version = 3)
+@Database(entities = [Task::class, Project::class], version = 4)
 @TypeConverters(*[LocalDateConverter::class, LocalTimeConverter::class])
 abstract class TaskDatabase : RoomDatabase() {
 
     abstract fun taskDao() : TaskDao
+    abstract fun projectDao() : ProjectDao
 
     companion object {
 

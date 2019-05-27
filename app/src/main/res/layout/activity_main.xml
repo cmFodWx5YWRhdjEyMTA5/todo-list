@@ -45,7 +45,24 @@
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:menu="@menu/main_drawer"
-            app:headerLayout="@layout/main_header" />
+            android:layout_gravity="start">
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+
+            <include layout="@layout/main_header"/>
+
+            <ListView
+                    android:id="@+id/list_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <ExpandableListView
+                    android:id="@+id/expanded_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
