@@ -4,11 +4,12 @@
               android:layout_height="match_parent">
 
     <TextView
+            android:text="Text"
             android:id="@+id/listViewItemText"
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeightSmall"
             android:gravity="center_vertical"
-            android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
+            android:paddingStart="?android:attr/listPreferredItemPaddingLeft"
             android:paddingEnd="?attr/listPreferredItemPaddingRight"
-            android:textSize="16sp"/>
+            android:textSize="16sp" android:drawablePadding="8dp"/>
 </LinearLayout>

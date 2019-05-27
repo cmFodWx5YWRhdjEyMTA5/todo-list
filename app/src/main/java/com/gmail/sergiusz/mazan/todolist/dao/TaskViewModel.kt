@@ -134,7 +134,7 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
     }
 
     fun update(project: Project) = scope.launch(Dispatchers.IO) {
-        repository.update(project)
+        repository.update   (project)
     }
 
     override fun onCleared() {

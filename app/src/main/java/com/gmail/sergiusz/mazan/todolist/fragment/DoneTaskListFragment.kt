@@ -30,12 +30,12 @@ abstract class DoneTaskListFragment : TaskListFragment() {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
                 val itemView = viewHolder.itemView
-                val background = ColorDrawable(Color.parseColor("#CC0000"))
+                val background = ColorDrawable(Color.parseColor("#EF5350"))
                 background.setBounds(0, itemView.top,itemView.left + dX.toInt(), itemView.bottom)
                 background.draw(c)
 
                 val icon = ContextCompat.getDrawable(viewHolder.itemView.context,
-                    R.drawable.ic_radio_button_unchecked_white_32dp
+                    R.drawable.ic_undo_white_32dp
                 )
 
                 val iconTop = itemView.top + (itemView.height - icon!!.intrinsicHeight) / 2

@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ExpandableListView
 import android.widget.ListView
@@ -70,20 +71,21 @@ class MainActivity : AppCompatActivity() {
             ),
             ListAdapter.ListViewItem(
                 "Done",
-                R.drawable.ic_done_all_green_24dp
+                R.drawable.ic_done_all_grey_24dp
             ),
             ListAdapter.ListViewItem(
                 "Add project",
-                R.drawable.ic_add_24dp
+                R.drawable.ic_add_grey_24dp
             ),
             ListAdapter.ListViewItem(
                 "Manage projects",
-                R.drawable.ic_add_24dp
+                R.drawable.ic_settings_grey_24dp
             )
         )
 
         val listView = findViewById<ListView>(R.id.list_menu)
         listView.adapter = ListAdapter(this, items)
+        listView.addFooterView(View(this))
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             if(position != 3) {
                 val fragment : Fragment

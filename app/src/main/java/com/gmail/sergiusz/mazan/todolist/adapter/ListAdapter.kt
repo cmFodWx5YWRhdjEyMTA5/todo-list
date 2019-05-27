@@ -18,7 +18,7 @@ class ListAdapter(context : Context, private val items : List<ListViewItem>)
         val view : View = convertView ?: LayoutInflater.from(context).inflate(R.layout.listview_item, null)
         val textView = view.findViewById<TextView>(R.id.listViewItemText)
         textView.text = item.title
-        textView.setCompoundDrawables(context.getDrawable(item.drawableId), null, null, null)
+        textView.setCompoundDrawablesWithIntrinsicBounds(item.drawableId, 0, 0, 0)
         return view
     }
 }
