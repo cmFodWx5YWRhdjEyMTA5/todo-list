@@ -1,9 +1,10 @@
-package com.gmail.sergiusz.mazan.todolist
+package com.gmail.sergiusz.mazan.todolist.application
 
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import com.gmail.sergiusz.mazan.todolist.notification.DailyNotificationReceiver
 import java.util.*
 
 class TODOList : Application() {

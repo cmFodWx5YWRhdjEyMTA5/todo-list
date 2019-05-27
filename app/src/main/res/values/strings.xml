@@ -25,4 +25,6 @@
     <string name="project_title">Title of project&#8230;</string>
     <string name="project_deadline">Deadline(optional)&#8230;</string>
     <string name="todo">TODO</string>
+    <string name="manage_projects">Manage projects</string>
+    <string name="edit_project_title">Edit Project</string>
 </resources>

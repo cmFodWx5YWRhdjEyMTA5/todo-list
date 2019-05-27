@@ -45,7 +45,7 @@ class AddEditProjectTaskActivity : AppCompatActivity() {
             title = getString(R.string.add_task_title)
             var projectId : Long? = intent.getLongExtra("projectId", -1)
             projectId = if(projectId == -1L) null else projectId
-            task = Task("", LocalDate.now(), null, 1, false, projectId)
+            task = Task("", null, null, 1, false, projectId)
         }
 
         updateTaskDate()

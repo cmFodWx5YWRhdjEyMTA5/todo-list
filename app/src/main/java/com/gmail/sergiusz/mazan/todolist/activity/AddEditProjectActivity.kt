@@ -28,8 +28,14 @@ class AddEditProjectActivity : AppCompatActivity() {
         val cancelTime : ImageView = findViewById(R.id.cancelDeadline)
         descriptionText = findViewById(R.id.projectTitle)
 
-        title = getString(R.string.add_project_title)
-        project = Project("", LocalDate.now())
+        if(intent.hasExtra("projectToEdit")) {
+            title = getString(R.string.edit_project_title)
+            project = intent.getSerializableExtra("projectToEdit") as Project
+            descriptionText.setText(project.name)
+        } else {
+            title = getString(R.string.add_project_title)
+            project = Project("", null)
+        }
 
         updateProjectDate()
 

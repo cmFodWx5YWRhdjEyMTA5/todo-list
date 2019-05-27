@@ -3,7 +3,7 @@ package com.gmail.sergiusz.mazan.todolist.fragment
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 
-class AllTaskListFragment : UndoneTaskListFragment() {
+class AllUndoneTaskListFragment : UndoneTaskListFragment() {
     override fun isInProject(): Boolean {
         return false
     }

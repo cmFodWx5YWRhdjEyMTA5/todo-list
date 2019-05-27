@@ -11,7 +11,7 @@ import com.gmail.sergiusz.mazan.todolist.dao.Project
 
 class ExpandableListAdapter(private val context : Context) : BaseExpandableListAdapter() {
 
-    private var childList : List<Project> = emptyList()
+    var childList : List<Project> = emptyList()
 
     fun setList(projects : List<Project>) {
         childList = projects

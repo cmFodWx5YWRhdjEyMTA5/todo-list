@@ -3,16 +3,16 @@ package com.gmail.sergiusz.mazan.todolist.fragment
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 
-class DoneProjectFragment : DoneTaskListFragment() {
+class DoneProjectTaskListFragment : DoneTaskListFragment() {
 
     override fun isInProject(): Boolean {
         return true
     }
 
     companion object {
-        fun newInstance(projectId : Long) : DoneProjectFragment {
+        fun newInstance(projectId : Long) : DoneProjectTaskListFragment {
 
-            val fragment = DoneProjectFragment()
+            val fragment = DoneProjectTaskListFragment()
             val bundle = Bundle()
             bundle.putLong("projectId", projectId)
             fragment.arguments = bundle

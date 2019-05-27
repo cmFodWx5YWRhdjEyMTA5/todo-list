@@ -1,6 +1,7 @@
 package com.gmail.sergiusz.mazan.todolist.fragment
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -9,66 +10,67 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
-import com.gmail.sergiusz.mazan.todolist.*
-import com.gmail.sergiusz.mazan.todolist.activity.AddEditProjectTaskActivity
-import com.gmail.sergiusz.mazan.todolist.activity.AddEditTaskActivity
+import com.gmail.sergiusz.mazan.todolist.ProjectDetailsLookup
+import com.gmail.sergiusz.mazan.todolist.R
+import com.gmail.sergiusz.mazan.todolist.TaskKeyProvider
+import com.gmail.sergiusz.mazan.todolist.activity.AddEditProjectActivity
 import com.gmail.sergiusz.mazan.todolist.activity.MainActivity
-import com.gmail.sergiusz.mazan.todolist.adapter.TaskListAdapter
+import com.gmail.sergiusz.mazan.todolist.adapter.ProjectListAdapter
+import com.gmail.sergiusz.mazan.todolist.dao.Project
 import com.gmail.sergiusz.mazan.todolist.dao.Task
 import com.gmail.sergiusz.mazan.todolist.dao.TaskViewModel
 
-abstract class TaskListFragment : Fragment() {
+class ProjectListFragment : Fragment() {
+
 
     private lateinit var recyclerView : RecyclerView
-    protected lateinit var model : TaskViewModel
-    protected lateinit var adapter : TaskListAdapter
+    lateinit var model : TaskViewModel
+    lateinit var adapter : ProjectListAdapter
     private var actionMode : ActionMode? = null
-    private var tasks : ArrayList<Task> = ArrayList()
+    private var projects : ArrayList<Project> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         model = activity?.run {
-                ViewModelProviders.of(this).get(TaskViewModel::class.java)
+            ViewModelProviders.of(this).get(TaskViewModel::class.java)
         } ?: throw Exception("Invalid activity")
 
-        adapter = TaskListAdapter(object :
-            TaskListAdapter.TaskItemClickListener {
-            override fun onItemClick(task: Task, view: View): Boolean {
-                if(isInProject()) {
-                    val intent = Intent(activity, AddEditProjectTaskActivity::class.java)
-                    intent.putExtra("taskToEdit", task)
-                    startActivityForResult(intent, MainActivity.EDIT_TASK_REQUEST)
-                } else {
-                    val intent = Intent(activity, AddEditTaskActivity::class.java)
-                    intent.putExtra("taskToEdit", task)
-                    startActivityForResult(intent, MainActivity.EDIT_TASK_REQUEST)
-                }
+        adapter = ProjectListAdapter(object :
+            ProjectListAdapter.ProjectItemClickListener {
+
+            override fun onItemClick(project : Project, view: View): Boolean {
+                val intent = Intent(activity, AddEditProjectActivity::class.java)
+                intent.putExtra("projectToEdit", project)
+                startActivityForResult(intent, MainActivity.EDIT_PROJECT_REQUEST)
                 return true
             }
 
-        }, isDateVisible())
+        })
 
-        setObservers(savedInstanceState)
+        model.allProjects.observe(this, Observer { item ->
+            item?.let {
+                adapter.submitList(item)
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_list_project, container, false)
 
-        recyclerView = rootView.findViewById(R.id.task_recycle_view)
+        recyclerView = rootView.findViewById(R.id.project_recycle_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
 
         val tracker = SelectionTracker.Builder<Long>(
-            "mySelection",
+            "projectSelection",
             recyclerView,
             TaskKeyProvider(),
-            TaskDetailsLookup(recyclerView),
+            ProjectDetailsLookup(recyclerView),
             StorageStrategy.createLongStorage()
         ).withSelectionPredicate(
             SelectionPredicates.createSelectAnything()
@@ -89,8 +91,8 @@ abstract class TaskListFragment : Fragment() {
             override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
                 return when (item.itemId) {
                     R.id.delete_action -> {
-                        for(task in tasks) {
-                            model.delete(task)
+                        for(project in projects) {
+                            model.delete(project)
                         }
                         mode.finish()
                         return true
@@ -101,7 +103,7 @@ abstract class TaskListFragment : Fragment() {
 
             override fun onDestroyActionMode(mode: ActionMode) {
                 actionMode = null
-                tasks.clear()
+                projects.clear()
                 tracker.clearSelection()
             }
         }
@@ -120,28 +122,21 @@ abstract class TaskListFragment : Fragment() {
                     }
 
                     if(selected)
-                        tasks.add(adapter.getItemAtPosition(key.toInt()))
+                        projects.add(adapter.getItemAtPosition(key.toInt()))
                     else
-                        tasks.remove(adapter.getItemAtPosition(key.toInt()))
+                        projects.remove(adapter.getItemAtPosition(key.toInt()))
                 }
             })
 
         adapter.tracker = tracker
 
-        ItemTouchHelper(getCallback()).attachToRecyclerView(recyclerView)
-
         return rootView
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(resultCode == Activity.RESULT_OK && requestCode == MainActivity.EDIT_TASK_REQUEST) {
-            val task : Task = data?.getSerializableExtra("task") as Task
-            model.update(task)
+        if(resultCode == Activity.RESULT_OK && requestCode == MainActivity.EDIT_PROJECT_REQUEST) {
+            val project : Project = data?.getSerializableExtra("project") as Project
+            model.update(project)
         }
     }
-
-    protected abstract fun setObservers(savedInstanceState: Bundle?)
-    protected abstract fun isDateVisible() : Boolean
-    protected abstract fun getCallback() : ItemTouchHelper.Callback
-    protected abstract fun isInProject() : Boolean
 }

@@ -1,11 +1,12 @@
-package com.gmail.sergiusz.mazan.todolist
+package com.gmail.sergiusz.mazan.todolist.adapter
 
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.gmail.sergiusz.mazan.todolist.fragment.DoneProjectFragment
-import com.gmail.sergiusz.mazan.todolist.fragment.UndoneProjectFragment
+import com.gmail.sergiusz.mazan.todolist.R
+import com.gmail.sergiusz.mazan.todolist.fragment.DoneProjectTaskListFragment
+import com.gmail.sergiusz.mazan.todolist.fragment.UndoneProjectTaskListFragment
 
 class ProjectPagerAdapter(private val context : Context, manager : FragmentManager, private val projectId : Long)
     : FragmentPagerAdapter(manager) {
@@ -13,8 +14,8 @@ class ProjectPagerAdapter(private val context : Context, manager : FragmentManag
     private val tabAmount : Int = 2
 
     override fun getItem(index: Int): Fragment = when(index) {
-        0 -> UndoneProjectFragment.newInstance(projectId)
-        else -> DoneProjectFragment.newInstance(projectId)
+        0 -> UndoneProjectTaskListFragment.newInstance(projectId)
+        else -> DoneProjectTaskListFragment.newInstance(projectId)
     }
 
     override fun getCount(): Int {

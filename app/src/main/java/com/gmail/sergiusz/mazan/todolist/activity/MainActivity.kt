@@ -21,7 +21,9 @@ import com.gmail.sergiusz.mazan.todolist.adapter.ExpandableListAdapter
 import com.gmail.sergiusz.mazan.todolist.adapter.ListAdapter
 import com.gmail.sergiusz.mazan.todolist.dao.Project
 import com.gmail.sergiusz.mazan.todolist.dao.Task
+import com.gmail.sergiusz.mazan.todolist.dao.TaskViewModel
 import com.gmail.sergiusz.mazan.todolist.fragment.*
+import java.time.format.DateTimeFormatter
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         const val ADD_TASK_REQUEST = 1
         const val EDIT_TASK_REQUEST = 2
         const val ADD_PROJECT_REQUEST = 3
+        const val EDIT_PROJECT_REQUEST = 3
     }
 
     private lateinit var viewModel : TaskViewModel
@@ -72,6 +75,10 @@ class MainActivity : AppCompatActivity() {
             ListAdapter.ListViewItem(
                 "Add project",
                 R.drawable.ic_add_24dp
+            ),
+            ListAdapter.ListViewItem(
+                "Manage projects",
+                R.drawable.ic_add_24dp
             )
         )
 
@@ -86,12 +93,16 @@ class MainActivity : AppCompatActivity() {
                         setTitle(R.string.app_name)
                     }
                     1 -> {
-                        fragment = AllTaskListFragment()
+                        fragment = AllUndoneTaskListFragment()
                         setTitle(R.string.all_tasks)
                     }
-                    else -> {
+                    2 -> {
                         fragment = AllDoneTaskListFragment()
                         setTitle(R.string.done)
+                    }
+                    else -> {
+                        fragment = ProjectListFragment()
+                        setTitle(R.string.manage_projects)
                     }
                 }
                 val transaction = supportFragmentManager.beginTransaction()
@@ -127,6 +138,8 @@ class MainActivity : AppCompatActivity() {
             transaction.replace(R.id.fragment_container, ProjectFragment.newInstance(id))
             transaction.commit()
             title = view.findViewById<TextView>(R.id.listChild).text
+            supportActionBar?.subtitle = expandableListAdapter.childList[childPosition].
+                deadline?.format(DateTimeFormatter.ofPattern("dd.MM.yy"))
             drawer.closeDrawers()
             projectId = id
             true

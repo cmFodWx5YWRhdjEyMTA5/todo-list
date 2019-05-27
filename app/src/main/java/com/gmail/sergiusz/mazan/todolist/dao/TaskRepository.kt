@@ -41,9 +41,14 @@ class TaskRepository(private val taskDatabase: TaskDatabase) {
     fun delete(task: Task) = taskDatabase.taskDao().delete(task)
 
     @WorkerThread
-    fun update(task: Task) =  taskDatabase.taskDao().update(task)
+    fun delete(project : Project) = taskDatabase.projectDao().delete(project)
 
+    @WorkerThread
+    fun update(task: Task) =  taskDatabase.taskDao().update(task)
 
     @WorkerThread
     fun insert(project : Project) = taskDatabase.projectDao().insert(project)
+
+    @WorkerThread
+    fun update(project : Project) = taskDatabase.projectDao().update(project)
 }

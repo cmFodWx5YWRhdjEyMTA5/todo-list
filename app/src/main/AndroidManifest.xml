@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.SET_ALARM"/>
     
     <application
-            android:name=".TODOList"
+            android:name=".application.TODOList"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -37,8 +37,8 @@
 
         </activity>
 
-        <receiver android:name=".DailyNotificationReceiver"/>
-        <receiver android:name=".TaskNotificationReceiver"/>
+        <receiver android:name=".notification.DailyNotificationReceiver"/>
+        <receiver android:name=".notification.TaskNotificationReceiver"/>
     </application>
 
 </manifest>

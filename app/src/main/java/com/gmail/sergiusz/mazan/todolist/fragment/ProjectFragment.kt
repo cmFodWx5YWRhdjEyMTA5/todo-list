@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.gmail.sergiusz.mazan.todolist.ProjectPagerAdapter
+import com.gmail.sergiusz.mazan.todolist.adapter.ProjectPagerAdapter
 import com.gmail.sergiusz.mazan.todolist.R
 
 class ProjectFragment : Fragment() {
@@ -31,8 +31,10 @@ class ProjectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val viewPager = view.findViewById<ViewPager>(R.id.viewpager)
-        val viewAdapter = ProjectPagerAdapter(view.context, childFragmentManager,
-            arguments!!.getLong("projectId"))
+        val viewAdapter = ProjectPagerAdapter(
+            view.context, childFragmentManager,
+            arguments!!.getLong("projectId")
+        )
         viewPager.adapter = viewAdapter
 
         val taskTab = view.findViewById<TabLayout>(R.id.task_tab)

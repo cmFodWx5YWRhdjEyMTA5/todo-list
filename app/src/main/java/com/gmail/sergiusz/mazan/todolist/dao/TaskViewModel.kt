@@ -1,4 +1,4 @@
-package com.gmail.sergiusz.mazan.todolist
+package com.gmail.sergiusz.mazan.todolist.dao
 
 import android.app.AlarmManager
 import android.app.Application
@@ -9,10 +9,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.content.Context
 import android.content.Intent
-import com.gmail.sergiusz.mazan.todolist.dao.Project
-import com.gmail.sergiusz.mazan.todolist.dao.Task
-import com.gmail.sergiusz.mazan.todolist.dao.TaskDatabase
-import com.gmail.sergiusz.mazan.todolist.dao.TaskRepository
+import com.gmail.sergiusz.mazan.todolist.notification.TaskNotificationReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -94,6 +91,10 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
         repository.delete(task)
     }
 
+    fun delete(project: Project) = scope.launch(Dispatchers.IO) {
+        repository.delete(project)
+    }
+
     fun update(task: Task) = scope.launch(Dispatchers.IO) {
         repository.update(task)
 
@@ -130,6 +131,10 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
             alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         }
+    }
+
+    fun update(project: Project) = scope.launch(Dispatchers.IO) {
+        repository.update(project)
     }
 
     override fun onCleared() {
