@@ -66,7 +66,7 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
     fun insert(task: Task) = scope.launch(Dispatchers.IO) {
         val taskId = repository.insert(task)
 
-        if(task.time != null) {
+        if(task.date != null && task.time != null) {
             val intent = Intent(getApplication(), TaskNotificationReceiver::class.java)
             intent.putExtra("taskId", taskId)
 
@@ -78,9 +78,9 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
 
             val calendar = Calendar.getInstance().apply {
                 timeInMillis = System.currentTimeMillis()
-                set(Calendar.YEAR, task.date.year)
-                set(Calendar.MONTH, task.date.monthValue-1)
-                set(Calendar.DAY_OF_MONTH, task.date.dayOfMonth)
+                set(Calendar.YEAR, task.date!!.year)
+                set(Calendar.MONTH, task.date!!.monthValue-1)
+                set(Calendar.DAY_OF_MONTH, task.date!!.dayOfMonth)
                 set(Calendar.HOUR_OF_DAY, task.time!!.hour)
                 set(Calendar.MINUTE, task.time!!.minute)
             }
@@ -104,7 +104,7 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
             intent, PendingIntent.FLAG_NO_CREATE)
 
         //Jesli nie ma godziny ustawionej
-        if(task.time == null) {
+        if(task.date != null && task.time == null) {
             //Jesli wczesniej faktycznie byl ustawiony alarm
             if (pendingIntent != null) {
                 val alarmManager = getApplication<Application>()
@@ -120,9 +120,9 @@ class TaskViewModel(application : Application) : AndroidViewModel(application) {
 
             val calendar = Calendar.getInstance().apply {
                 timeInMillis = System.currentTimeMillis()
-                set(Calendar.YEAR, task.date.year)
-                set(Calendar.MONTH, task.date.monthValue-1)
-                set(Calendar.DAY_OF_MONTH, task.date.dayOfMonth)
+                set(Calendar.YEAR, task.date!!.year)
+                set(Calendar.MONTH, task.date!!.monthValue-1)
+                set(Calendar.DAY_OF_MONTH, task.date!!.dayOfMonth)
                 set(Calendar.HOUR_OF_DAY, task.time!!.hour)
                 set(Calendar.MINUTE, task.time!!.minute)
             }

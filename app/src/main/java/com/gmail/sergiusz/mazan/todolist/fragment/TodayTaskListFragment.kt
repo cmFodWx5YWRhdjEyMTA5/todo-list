@@ -5,6 +5,10 @@ import android.os.Bundle
 
 class TodayTaskListFragment : UndoneTaskListFragment() {
 
+    override fun isInProject(): Boolean {
+        return false
+    }
+
     override fun isDateVisible(): Boolean {
         return false
     }

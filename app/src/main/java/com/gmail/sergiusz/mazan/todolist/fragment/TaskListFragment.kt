@@ -15,6 +15,7 @@ import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import com.gmail.sergiusz.mazan.todolist.*
+import com.gmail.sergiusz.mazan.todolist.activity.AddEditProjectTaskActivity
 import com.gmail.sergiusz.mazan.todolist.activity.AddEditTaskActivity
 import com.gmail.sergiusz.mazan.todolist.activity.MainActivity
 import com.gmail.sergiusz.mazan.todolist.adapter.TaskListAdapter
@@ -38,12 +39,15 @@ abstract class TaskListFragment : Fragment() {
         adapter = TaskListAdapter(object :
             TaskListAdapter.TaskItemClickListener {
             override fun onItemClick(task: Task, view: View): Boolean {
-                val intent = Intent(activity, AddEditTaskActivity::class.java)
-                intent.putExtra("taskToEdit", task)
-                startActivityForResult(
-                    intent,
-                    MainActivity.EDIT_TASK_REQUEST
-                )
+                if(isInProject()) {
+                    val intent = Intent(activity, AddEditProjectTaskActivity::class.java)
+                    intent.putExtra("taskToEdit", task)
+                    startActivityForResult(intent, MainActivity.EDIT_TASK_REQUEST)
+                } else {
+                    val intent = Intent(activity, AddEditTaskActivity::class.java)
+                    intent.putExtra("taskToEdit", task)
+                    startActivityForResult(intent, MainActivity.EDIT_TASK_REQUEST)
+                }
                 return true
             }
 
@@ -138,4 +142,5 @@ abstract class TaskListFragment : Fragment() {
     protected abstract fun setObservers(savedInstanceState: Bundle?)
     protected abstract fun isDateVisible() : Boolean
     protected abstract fun getCallback() : ItemTouchHelper.Callback
+    protected abstract fun isInProject() : Boolean
 }

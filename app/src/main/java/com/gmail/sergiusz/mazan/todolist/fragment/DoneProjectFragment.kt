@@ -5,6 +5,10 @@ import android.os.Bundle
 
 class DoneProjectFragment : DoneTaskListFragment() {
 
+    override fun isInProject(): Boolean {
+        return true
+    }
+
     companion object {
         fun newInstance(projectId : Long) : DoneProjectFragment {
 

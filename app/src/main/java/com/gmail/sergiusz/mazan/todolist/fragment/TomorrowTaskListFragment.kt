@@ -4,6 +4,9 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 
 class TomorrowTaskListFragment : UndoneTaskListFragment() {
+    override fun isInProject(): Boolean {
+        return false
+    }
 
     override fun isDateVisible(): Boolean {
         return false

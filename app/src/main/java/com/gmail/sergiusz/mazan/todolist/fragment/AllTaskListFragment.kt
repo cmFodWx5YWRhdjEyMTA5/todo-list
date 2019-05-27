@@ -4,6 +4,9 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 
 class AllTaskListFragment : UndoneTaskListFragment() {
+    override fun isInProject(): Boolean {
+        return false
+    }
 
     override fun setObservers(savedInstanceState: Bundle?) {
         model.allUndoneTasks.observe(this, Observer { item ->

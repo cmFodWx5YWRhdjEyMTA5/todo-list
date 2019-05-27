@@ -5,6 +5,10 @@ import android.os.Bundle
 
 class UndoneProjectFragment : UndoneTaskListFragment() {
 
+    override fun isInProject(): Boolean {
+        return true
+    }
+
     companion object {
         fun newInstance(projectId : Long) : UndoneProjectFragment {
 

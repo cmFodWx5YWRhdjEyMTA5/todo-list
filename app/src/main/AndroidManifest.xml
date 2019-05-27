@@ -31,6 +31,11 @@
 
         </activity>
 
+        <activity android:name=".activity.AddEditProjectTaskActivity"
+                  android:label="@string/add_project_title"
+                  android:parentActivityName=".activity.MainActivity">
+
+        </activity>
 
         <receiver android:name=".DailyNotificationReceiver"/>
         <receiver android:name=".TaskNotificationReceiver"/>

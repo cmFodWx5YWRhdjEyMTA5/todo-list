@@ -51,7 +51,7 @@ class TaskListAdapter(val listener : TaskItemClickListener, val isDateVisible : 
         holder.descriptionTextView.text = getItem(index).description
         holder.timeTextView.text = getItem(index).time?.format(DateTimeFormatter.ofPattern("HH:mm"))
         if(isDateVisible)
-            holder.dateTextView.text = getItem(index).date.format(DateTimeFormatter.ofPattern("dd.MM.yy"))
+            holder.dateTextView.text = getItem(index).date?.format(DateTimeFormatter.ofPattern("dd.MM.yy"))
         else
             holder.dateTextView.visibility = View.GONE
 

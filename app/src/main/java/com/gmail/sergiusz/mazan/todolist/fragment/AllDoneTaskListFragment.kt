@@ -4,6 +4,9 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 
 class AllDoneTaskListFragment : DoneTaskListFragment() {
+    override fun isInProject(): Boolean {
+        return false
+    }
 
     override fun setObservers(savedInstanceState: Bundle?) {
         model.allDoneTasks.observe(this, Observer { item ->

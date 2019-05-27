@@ -9,6 +9,7 @@
     <string name="edit_task_title">Edit task</string>
     <string name="task_description">Description&#8230;</string>
     <string name="task_time">Time(optional)&#8230;</string>
+    <string name="task_date">Date(optional)&#8230;</string>
     <string name="null_description">Enter description</string>
     <string name="null_title">Enter title</string>
     <string name="task_added">Task has been added</string>

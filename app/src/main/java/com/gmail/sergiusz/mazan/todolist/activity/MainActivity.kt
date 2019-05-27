@@ -136,11 +136,18 @@ class MainActivity : AppCompatActivity() {
     private fun prepareAddButton() {
         val addButton = findViewById<FloatingActionButton>(R.id.add_button)
         addButton.setOnClickListener {
-            intent = Intent(this, AddEditTaskActivity::class.java)
-            intent.putExtra("projectId", projectId)
-            startActivityForResult(intent,
-                ADD_TASK_REQUEST
-            )
+            if(projectId != null) {
+                intent = Intent(this, AddEditProjectTaskActivity::class.java)
+                intent.putExtra("projectId", projectId!!)
+                startActivityForResult(intent,
+                    ADD_TASK_REQUEST
+                )
+            } else {
+                intent = Intent(this, AddEditTaskActivity::class.java)
+                startActivityForResult(intent,
+                    ADD_TASK_REQUEST
+                )
+            }
         }
 
     }
@@ -169,12 +176,10 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == ADD_TASK_REQUEST) {
             val task : Task = data?.getSerializableExtra("task") as Task
-            Log.d("MainActivity", task.toString())
             viewModel.insert(task)
         }
         if(resultCode == Activity.RESULT_OK && requestCode == ADD_PROJECT_REQUEST) {
             val project : Project = data?.getSerializableExtra("project") as Project
-            Log.d("MainActivity", project.toString())
             viewModel.insert(project)
         }
     }

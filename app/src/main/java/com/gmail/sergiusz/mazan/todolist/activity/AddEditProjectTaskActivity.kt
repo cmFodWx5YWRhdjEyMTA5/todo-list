@@ -5,9 +5,9 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
 import com.gmail.sergiusz.mazan.todolist.R
 import com.gmail.sergiusz.mazan.todolist.dao.Task
@@ -15,21 +15,25 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class AddEditTaskActivity : AppCompatActivity() {
+class AddEditProjectTaskActivity : AppCompatActivity() {
 
     private lateinit var task : Task
     private lateinit var descriptionText : EditText
-
+    private lateinit var dateText : EditText
+    private lateinit var timeText : EditText
+    private lateinit var cancelTime : ImageView
+    private lateinit var cancelDate : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_task)
+        setContentView(R.layout.activity_add_task_project)
         setSupportActionBar(findViewById(R.id.add_task_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val dateText : EditText = findViewById(R.id.taskDate)
-        val timeText : EditText = findViewById(R.id.taskTime)
-        val cancelTime : ImageView = findViewById(R.id.cancelTime)
+        dateText = findViewById(R.id.taskDate)
+        timeText = findViewById(R.id.taskTime)
+        cancelTime = findViewById(R.id.cancelTime)
+        cancelDate = findViewById(R.id.cancelDate)
         descriptionText = findViewById(R.id.taskDescription)
 
         if(intent.hasExtra("taskToEdit")) {
@@ -39,7 +43,9 @@ class AddEditTaskActivity : AppCompatActivity() {
         }
         else {
             title = getString(R.string.add_task_title)
-            task = Task("", LocalDate.now(), null, 1, false)
+            var projectId : Long? = intent.getLongExtra("projectId", -1)
+            projectId = if(projectId == -1L) null else projectId
+            task = Task("", LocalDate.now(), null, 1, false, projectId)
         }
 
         updateTaskDate()
@@ -52,7 +58,7 @@ class AddEditTaskActivity : AppCompatActivity() {
             }
 
             val nonNullDate = task.date ?: LocalDate.now()
-            DatePickerDialog(this@AddEditTaskActivity, onDateSetListener, nonNullDate.year,
+            DatePickerDialog(this@AddEditProjectTaskActivity, onDateSetListener, nonNullDate.year,
                 nonNullDate.monthValue-1, nonNullDate.dayOfMonth).show()
         }
 
@@ -63,7 +69,7 @@ class AddEditTaskActivity : AppCompatActivity() {
             }
 
             val nonNullTime = task.time ?: LocalTime.now()
-            TimePickerDialog(this@AddEditTaskActivity, onTimeSetListener,
+            TimePickerDialog(this@AddEditProjectTaskActivity, onTimeSetListener,
                 nonNullTime.hour, nonNullTime.minute, true).show()
         }
 
@@ -80,6 +86,11 @@ class AddEditTaskActivity : AppCompatActivity() {
             task.time = null
             updateTaskTime()
         }
+
+        cancelDate.setOnClickListener {
+            task.date = null
+            updateTaskDate()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -90,7 +101,7 @@ class AddEditTaskActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?) = when(item?.itemId) {
         R.id.submit_action -> {
             if(descriptionText.text == null || descriptionText.text.toString() == "")
-                Toast.makeText(this@AddEditTaskActivity, getString(R.string.null_description),
+                Toast.makeText(this@AddEditProjectTaskActivity, getString(R.string.null_description),
                     Toast.LENGTH_LONG).show()
             else {
                 task.description = descriptionText.text.toString()
@@ -108,6 +119,16 @@ class AddEditTaskActivity : AppCompatActivity() {
         val dateText : EditText = findViewById(R.id.taskDate)
         val formatter = DateTimeFormatter.ofPattern("MM/dd/yy")
         dateText.setText(task.date?.format(formatter))
+        if(task.date != null) {
+            cancelTime.visibility = View.VISIBLE
+            timeText.visibility = View.VISIBLE
+        }
+        else {
+            task.time = null
+            updateTaskTime()
+            cancelTime.visibility = View.GONE
+            timeText.visibility = View.GONE
+        }
     }
 
     private fun updateTaskTime() {
